@@ -8,6 +8,11 @@ public class Board : MonoBehaviour
     private int width;
     [SerializeField]
     private int height;
+    [SerializeField]
+    private int borderSize;
+
+    [SerializeField]
+    private Camera camera;
 
     private Tile[,] allTiles;
 
@@ -19,6 +24,7 @@ public class Board : MonoBehaviour
     private void Start()
     {
         SetupTiles();
+        SetupCamera();
     }
 
     private void SetupTiles()
@@ -34,5 +40,15 @@ public class Board : MonoBehaviour
                 tile.transform.parent = transform;
             }
         }
+    }
+
+    private void SetupCamera()
+    {
+        camera.transform.position = new Vector3((float) (width - 1)/2f, (float) (height - 1)/2, -10f);
+
+        var aspectRatio = (float) Screen.width / (float) Screen.height;
+        var verticalSize = (float) height / 2f + (float) borderSize;
+        var horizontalSize = ((float) width / 2f + (float) borderSize) / aspectRatio;
+        camera.orthographicSize = (verticalSize > horizontalSize) ? verticalSize : horizontalSize;
     }
 }
